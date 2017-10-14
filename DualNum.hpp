@@ -29,10 +29,22 @@ public:
         return *this;
     }
 
+    inline this_type& operator+=(T const& rhs)
+    {
+        real_ += rhs;
+        return *this;
+    }
+
     inline this_type operator-=(this_type const& rhs)
     {
         real_ -= rhs.real_;
         imag_ -= rhs.imag_;
+        return *this;
+    }
+
+    inline this_type& operator-=(T const& rhs)
+    {
+        real_ -= rhs;
         return *this;
     }
 
@@ -43,6 +55,13 @@ public:
         return *this;
     }
 
+    inline this_type& operator*=(T const& rhs)
+    {
+        real_ *= rhs;
+        imag_ *= rhs;
+        return *this;
+    }
+
     inline this_type operator/=(this_type const& rhs)
     {
         imag_ = (imag_ * rhs.real_ - real_ * rhs.imag_) / (rhs.real_ * rhs.real_);
@@ -50,7 +69,19 @@ public:
         return *this;
     }
 
+    inline this_type& operator/=(T const& rhs)
+    {
+        real_ /= rhs;
+        imag_ /= rhs;
+        return *this;
+    }
+
     inline this_type operator+(this_type const& rhs) const
+    {
+        return this_type(*this) += rhs;
+    }
+
+    inline this_type operator+(T const& rhs) const
     {
         return this_type(*this) += rhs;
     }
@@ -60,12 +91,27 @@ public:
         return this_type(*this) -= rhs;
     }
 
+    inline this_type operator-(T const& rhs) const
+    {
+        return this_type(*this) -= rhs;
+    }
+
     inline this_type operator*(this_type const& rhs) const
     {
         return this_type(*this) *= rhs;
     }
 
+    inline this_type operator*(T const& rhs) const
+    {
+        return this_type(*this) *= rhs;
+    }
+
     inline this_type operator/(this_type const& rhs) const
+    {
+        return this_type(*this) /= rhs;
+    }
+
+    inline this_type operator/(T const& rhs) const
     {
         return this_type(*this) /= rhs;
     }
@@ -85,7 +131,7 @@ public:
         return out << rhs.real_ << "+" << rhs.imag_ << "ε";
     }
 
-    inline static this_type abs(this_type const& arg)
+    inline static T norm(this_type const& arg)
     {
         return std::abs(arg.real_);
     }
