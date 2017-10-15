@@ -5,7 +5,7 @@ template <typename T>
 T func(T x)
 {
     using namespace std;
-    return exp(x);
+    return sin(x);
 }
 
 template <typename T>
@@ -16,6 +16,7 @@ T dfunc(T x)
 
 int main()
 {
-    std::cout << dfunc(1.0) << std::endl;
+    double pi = 3.1415926535;
+    std::cout << dfunc(pi / 2) << std::endl;
     return 0;
 }
