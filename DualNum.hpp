@@ -17,8 +17,8 @@ public:
         : real_(real), imag_(imag){};
 
     // getter
-    inline this_type real() { return real_; }
-    inline this_type imag() { return imag_; }
+    inline T real() { return real_; }
+    inline T imag() { return imag_; }
 
     /*----------------------------------------------------------------------
                             算術演算子

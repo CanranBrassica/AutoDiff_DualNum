@@ -1,23 +1,21 @@
 #include <iostream>
-#include <functional>
 #include "DualNum.hpp"
 
-
 template <typename T>
-T f(T x)
+T func(T x)
 {
     using namespace std;
     return exp(x);
 }
 
 template <typename T>
-T D(std::function<T(T)>)
-
-    int main()
+T dfunc(T x)
 {
+    return func(DualNum<T>(x, T(1))).imag();
+}
 
-
-    DualNum<double> a{1.0, 1.0};
-
+int main()
+{
+    std::cout << dfunc(1.0) << std::endl;
     return 0;
 }
