@@ -4,26 +4,45 @@
 template <typename T>
 T func(T x)
 {
-    return std::sin(x);
+    return x * x * x * x;
 }
 
-template <typename T>
-T dfunc(T x)
+/*
+二乗すると0になる数ε(実数ではない)を用いて、二重数a+bε(a,bは実数)を定義すると
+f(a+bε)=f(a)+bf'(a)ε
+となる。（テイラー展開を考えればわかる）
+つまり、f'(a)=Im(f(a+ε))  (Im(a+bε)=b)
+*/
+
+template <typename T, unsigned int N>
+class DiffFunc
 {
-    return func(DualNum<T>(x, T(1))).imag();
-}
+public:
+    inline T operator()(T x)
+    {
+        DiffFunc<DualNum<T>, N - 1> diff_func;
+        return diff_func(DualNum<T>(x, T(1))).imag();
+    }
+};
+
 template <typename T>
-T ddfunc(T x)
+class DiffFunc<T, 0>
 {
-    return dfunc(DualNum<T>(x, T(1))).imag();
-}
+public:
+    inline T operator()(T x)
+    {
+        return func(x);
+    }
+};
 
 
 int main()
 {
     double pi = 3.1415926535;
-    std::cout << func(pi) << std::endl;
-    std::cout << dfunc(pi) << std::endl;
-    std::cout << ddfunc(pi) << std::endl;
+    std::cout << DiffFunc<double, 0>()(pi) << std::endl;
+    std::cout << DiffFunc<double, 1>()(pi) << std::endl;
+    std::cout << DiffFunc<double, 2>()(pi) << std::endl;
+    std::cout << DiffFunc<double, 3>()(pi) << std::endl;
+    std::cout << DiffFunc<double, 5>()(pi) << std::endl;
     return 0;
 }

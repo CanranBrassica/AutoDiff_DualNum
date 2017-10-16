@@ -140,7 +140,7 @@ DualNum<T> pow(const DualNum<T> base, const DualNum<T> exponent)
 template <typename T>
 DualNum<T> sqrt(const DualNum<T> arg)
 {
-    return DualNum<T>(sqrt(arg.real()), arg.imag() / (2 * sqrt(arg.real())));
+    return DualNum<T>(sqrt(arg.real()), arg.imag() / (T(2) * sqrt(arg.real())));
 }
 // 三角関数
 template <typename T>
