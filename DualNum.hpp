@@ -121,6 +121,9 @@ DualNum<T> cos(const DualNum<T> arg);
 
 
 // 一般関数をdual number対応にする
+
+// f(a+bε)=f(a)+bf'(a)ε
+
 // 指数・対数
 template <typename T>
 DualNum<T> exp(const DualNum<T> arg)
@@ -140,7 +143,7 @@ DualNum<T> pow(const DualNum<T> base, const DualNum<T> exponent)
 template <typename T>
 DualNum<T> sqrt(const DualNum<T> arg)
 {
-    return DualNum<T>(sqrt(arg.real()), arg.imag() / (T(2) * sqrt(arg.real())));
+    return DualNum<T>(sqrt(arg.real()), arg.imag() / (2 * sqrt(arg.real())));
 }
 // 三角関数
 template <typename T>
