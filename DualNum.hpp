@@ -17,8 +17,8 @@ public:
         : real_(real), imag_(imag){};
 
     // getter
-    inline T real() { return real_; }
-    inline T imag() { return imag_; }
+    inline T real() const { return real_; }
+    inline T imag() const { return imag_; }
 
     /*----------------------------------------------------------------------
                             算術演算子
@@ -111,29 +111,99 @@ public:
             return out << arg.real_ << '+' << arg.imag_ << 'e';
         }
     }
-
-    // 一般関数をdual number対応にする
-    // 指数・対数
-    inline friend this_type exp(const this_type arg) { return this_type(exp(arg.real_), arg.imag_ * exp(arg.real_)); }
-    inline friend this_type log(const this_type arg) { return this_type(log(arg.real_), arg.imag_ / arg.real_); }
-    inline friend this_type pow(const this_type base, const this_type exponent) { return exp(exponent * log(base)); }
-    inline friend this_type sqrt(const this_type arg) { return this_type(sqrt(arg.real_), arg.imag_ / (2 * sqrt(arg.real_))); }
-    // 三角関数
-    inline friend this_type sin(const this_type arg) { return this_type(sin(arg.real_), arg.imag_ * cos(arg.real_)); }
-    inline friend this_type cos(const this_type arg) { return this_type(cos(arg.real_), -arg.imag_ * sin(arg.real_)); }
-    inline friend this_type tan(const this_type arg) { return sin(arg) / cos(arg); }
-    // 双曲線関数
-    inline friend this_type sinh(const this_type arg) { return (exp(arg) - exp(-arg)) / 2; }
-    inline friend this_type cosh(const this_type arg) { return (exp(arg) + exp(-arg)) / 2; }
-    inline friend this_type tanh(const this_type arg) { return sinh(arg) / cosh(arg); }
-    //逆三角関数
-    /*
-    inline friend this_type asin(const this_type arg) { return this_type(asin(arg.real_), arg.imag_ / sqrt(1 - real_ * real_)); }
-    inline friend this_type acos(const this_type arg) { return this_type(acos(arg.real_), -arg.imag_ / sqrt(1 - real_ * real_)); }
-    inline friend this_type atan(const this_type arg) { return this_type(atan(arg.real_), arg.imag_ / 1 + real_ * real_); }
-    //逆双曲線関数
-    inline friend this_type asinh(const this_type arg) { return this_type(asinh(arg.real_), arg.imag_ / sqrt(1 + real_ * real_)); }
-    inline friend this_type acosh(const this_type arg) { return this_type(acosh(arg.real_), arg.imag_ / sqrt(real_ * real_ - 1)); }
-    inline friend this_type atanh(const this_type arg) { return this_type(atanh(arg.real_), arg.imag_ / 1 - real_ * real_); }
-    */
 };
+
+namespace std
+{
+//プロトタイプ宣言
+template <typename T>
+DualNum<T> cos(const DualNum<T> arg);
+
+
+// 一般関数をdual number対応にする
+// 指数・対数
+template <typename T>
+DualNum<T> exp(const DualNum<T> arg)
+{
+    return DualNum<T>(exp(arg.real()), arg.imag() * exp(arg.real()));
+}
+template <typename T>
+DualNum<T> log(const DualNum<T> arg)
+{
+    return DualNum<T>(log(arg.real()), arg.imag() / arg.real());
+}
+template <typename T>
+DualNum<T> pow(const DualNum<T> base, const DualNum<T> exponent)
+{
+    return exp(exponent * log(base));
+}
+template <typename T>
+DualNum<T> sqrt(const DualNum<T> arg)
+{
+    return DualNum<T>(sqrt(arg.real()), arg.imag() / (2 * sqrt(arg.real())));
+}
+// 三角関数
+template <typename T>
+DualNum<T> sin(const DualNum<T> arg)
+{
+    return DualNum<T>(sin(arg.real()), arg.imag() * cos(arg.real()));
+}
+template <typename T>
+DualNum<T> cos(const DualNum<T> arg)
+{
+    return DualNum<T>(cos(arg.real()), -arg.imag() * sin(arg.real()));
+}
+template <typename T>
+DualNum<T> tan(const DualNum<T> arg)
+{
+    return sin(arg) / cos(arg);
+}
+// 双曲線関数
+template <typename T>
+DualNum<T> sinh(const DualNum<T> arg)
+{
+    return (exp(arg) - exp(-arg)) / 2;
+}
+template <typename T>
+DualNum<T> cosh(const DualNum<T> arg)
+{
+    return (exp(arg) + exp(-arg)) / 2;
+}
+template <typename T>
+DualNum<T> tanh(const DualNum<T> arg)
+{
+    return sinh(arg) / cosh(arg);
+}
+//逆三角関数
+template <typename T>
+DualNum<T> asin(const DualNum<T> arg)
+{
+    return DualNum<T>(asin(arg.real()), arg.imag() / sqrt(1 - arg.real() * arg.real()));
+}
+template <typename T>
+DualNum<T> acos(const DualNum<T> arg)
+{
+    return DualNum<T>(acos(arg.real()), -arg.imag() / sqrt(1 - arg.real() * arg.real()));
+}
+template <typename T>
+DualNum<T> atan(const DualNum<T> arg)
+{
+    return DualNum<T>(atan(arg.real()), arg.imag() / 1 + arg.real() * arg.real());
+}
+//逆双曲線関数
+template <typename T>
+DualNum<T> asinh(const DualNum<T> arg)
+{
+    return DualNum<T>(asinh(arg.real()), arg.imag() / sqrt(1 + arg.real() * arg.real()));
+}
+template <typename T>
+DualNum<T> acosh(const DualNum<T> arg)
+{
+    return DualNum<T>(acosh(arg.real()), arg.imag() / sqrt(arg.real() * arg.real() - 1));
+}
+template <typename T>
+DualNum<T> atanh(const DualNum<T> arg)
+{
+    return DualNum<T>(atanh(arg.real()), arg.imag() / 1 - arg.real() * arg.real());
+}
+}
