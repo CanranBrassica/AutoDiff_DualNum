@@ -47,16 +47,16 @@ public:
         imag_ -= rhs.imag_;
         return *this;
     }
-    inline this_type& operator*=(const T& rhs)
+    inline this_type operator*=(const this_type& rhs)
     {
-        real_ *= rhs;
-        imag_ *= rhs;
+        imag_ = imag_ * rhs.real_ + real_ * rhs.imag_;
+        real_ *= rhs.real_;
         return *this;
     }
-    inline this_type& operator/=(const T& rhs)
+    inline this_type operator/=(const this_type& rhs)
     {
-        real_ /= rhs;
-        imag_ /= rhs;
+        imag_ = (imag_ * rhs.real_ - real_ * rhs.imag_) / (rhs.real_ * rhs.real_);
+        real_ /= rhs.real_;
         return *this;
     }
 
@@ -71,18 +71,19 @@ public:
         real_ -= rhs;
         return *this;
     }
-    inline this_type operator*=(const this_type& rhs)
+    inline this_type& operator*=(const T& rhs)
     {
-        imag_ = imag_ * rhs.real_ + real_ * rhs.imag_;
-        real_ *= rhs.real_;
+        real_ *= rhs;
+        imag_ *= rhs;
         return *this;
     }
-    inline this_type operator/=(const this_type& rhs)
+    inline this_type& operator/=(const T& rhs)
     {
-        imag_ = (imag_ * rhs.real_ - real_ * rhs.imag_) / (rhs.real_ * rhs.real_);
-        real_ /= rhs.real_;
+        real_ /= rhs;
+        imag_ /= rhs;
         return *this;
     }
+
 
     // 二項演算子
     // dual numer & dual number
@@ -143,6 +144,16 @@ DualNum<T> log(const DualNum<T> arg)
 }
 template <typename T>
 DualNum<T> pow(const DualNum<T> base, const DualNum<T> exponent)
+{
+    return exp(exponent * log(base));
+}
+template <typename T, typename U>
+DualNum<T> pow(const DualNum<T> base, const U exponent)
+{
+    return exp(exponent * log(base));
+}
+template <typename T, typename U>
+DualNum<T> pow(const U base, const DualNum<T> exponent)
 {
     return exp(exponent * log(base));
 }
