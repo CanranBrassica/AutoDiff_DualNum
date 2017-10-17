@@ -1,15 +1,18 @@
 #include <iostream>
+#include <Eigen/Dense>
 #include "AutoDiff.hpp"
+
 
 int main()
 {
-    double pi = 3.14159265358979323846;
+    double a = 2;
 
-    auto f = [](auto x) { return std::cos(std::sin(x)); };
-    std::cout << Diff<double, 0>()(f, pi) << std::endl;
-    std::cout << Diff<double, 1>()(f, pi) << std::endl;
-    std::cout << Diff<double, 2>()(f, pi) << std::endl;
-    std::cout << Diff<double, 3>()(f, pi) << std::endl;
+    auto f = [](auto x) { return std::pow(x, 4); };
+
+    std::cout << Diff<double, 0>()(f, a) << std::endl;
+    std::cout << Diff<double, 1>()(f, a) << std::endl;
+    std::cout << Diff<double, 2>()(f, a) << std::endl;
+    std::cout << Diff<double, 3>()(f, a) << std::endl;
 
     return 0;
 }

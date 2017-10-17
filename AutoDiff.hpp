@@ -8,7 +8,7 @@ class Diff
 public:
     inline T operator()(auto func, T x)
     {
-        return Diff<DualNum<T>, N - 1>()(func, DualNum<T>(x, T(1.0))).imag();
+        return Diff<DualNum<T>, N - 1>()(func, DualNum<T>(x, T(1))).imag();
     }
 };
 

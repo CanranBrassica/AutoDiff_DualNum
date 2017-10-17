@@ -3,7 +3,13 @@
 #include <ostream>
 #include <cmath>
 
-template <typename T = double>
+/*
+ 二重数(dual number)を定義する
+ 二重数とは、二乗すると0になる数εを用いて
+ a+bεと表される数
+*/
+
+template <typename T>
 class DualNum
 {
 private:
