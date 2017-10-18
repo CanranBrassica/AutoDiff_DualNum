@@ -17,8 +17,6 @@ private:
     T imag_;
 
 public:
-    using this_type = DualNum<T>;
-
     inline DualNum(T real, T imag = T(0))
         : real_(real), imag_(imag){};
 
@@ -30,30 +28,30 @@ public:
                             算術演算子
     ----------------------------------------------------------------------*/
     // 単項演算子
-    inline this_type operator-() const { return this_type(-real_, -imag_); }
-    inline this_type operator+() const { return *this; }
+    inline DualNum<T> operator-() const { return DualNum<T>(-real_, -imag_); }
+    inline DualNum<T> operator+() const { return *this; }
 
     // 代入演算子
     // dual number
-    inline this_type& operator+=(const this_type& rhs)
+    inline DualNum<T>& operator+=(const DualNum<T>& rhs)
     {
         real_ += rhs.real_;
         imag_ += rhs.imag_;
         return *this;
     }
-    inline this_type& operator-=(const this_type& rhs)
+    inline DualNum<T>& operator-=(const DualNum<T>& rhs)
     {
         real_ -= rhs.real_;
         imag_ -= rhs.imag_;
         return *this;
     }
-    inline this_type operator*=(const this_type& rhs)
+    inline DualNum<T> operator*=(const DualNum<T>& rhs)
     {
         imag_ = imag_ * rhs.real_ + real_ * rhs.imag_;
         real_ *= rhs.real_;
         return *this;
     }
-    inline this_type operator/=(const this_type& rhs)
+    inline DualNum<T> operator/=(const DualNum<T>& rhs)
     {
         imag_ = (imag_ * rhs.real_ - real_ * rhs.imag_) / (rhs.real_ * rhs.real_);
         real_ /= rhs.real_;
@@ -61,23 +59,27 @@ public:
     }
 
     // real number
-    inline this_type& operator+=(const T& rhs)
+    template <typename U>
+    inline DualNum<T>& operator+=(const U& rhs)
     {
         real_ += rhs;
         return *this;
     }
-    inline this_type& operator-=(const T& rhs)
+    template <typename U>
+    inline DualNum<T>& operator-=(const U& rhs)
     {
         real_ -= rhs;
         return *this;
     }
-    inline this_type& operator*=(const T& rhs)
+    template <typename U>
+    inline DualNum<T>& operator*=(const U& rhs)
     {
         real_ *= rhs;
         imag_ *= rhs;
         return *this;
     }
-    inline this_type& operator/=(const T& rhs)
+    template <typename U>
+    inline DualNum<T>& operator/=(const U& rhs)
     {
         real_ /= rhs;
         imag_ /= rhs;
@@ -87,26 +89,58 @@ public:
 
     // 二項演算子
     // dual numer & dual number
-    inline this_type operator+(const this_type& arg) const { return this_type(*this) += arg; }
-    inline this_type operator-(const this_type& arg) const { return this_type(*this) -= arg; }
-    inline this_type operator*(const this_type& arg) const { return this_type(*this) *= arg; }
-    inline this_type operator/(const this_type& arg) const { return this_type(*this) /= arg; }
+    inline DualNum<T> operator+(const DualNum<T>& arg) const { return DualNum<T>(*this) += arg; }
+    inline DualNum<T> operator-(const DualNum<T>& arg) const { return DualNum<T>(*this) -= arg; }
+    inline DualNum<T> operator*(const DualNum<T>& arg) const { return DualNum<T>(*this) *= arg; }
+    inline DualNum<T> operator/(const DualNum<T>& arg) const { return DualNum<T>(*this) /= arg; }
 
     // dual number & real number
-    inline this_type operator+(const T& arg) const { return this_type(*this) += arg; }
-    inline this_type operator-(const T& arg) const { return this_type(*this) -= arg; }
-    inline this_type operator*(const T& arg) const { return this_type(*this) *= arg; }
-    inline this_type operator/(const T& arg) const { return this_type(*this) /= arg; }
+    template <typename U>
+    inline DualNum<T> operator+(const U& arg) const
+    {
+        return DualNum<T>(*this) += arg;
+    }
+    template <typename U>
+    inline DualNum<T> operator-(const U& arg) const
+    {
+        return DualNum<T>(*this) -= arg;
+    }
+    template <typename U>
+    inline DualNum<T> operator*(const U& arg) const
+    {
+        return DualNum<T>(*this) *= arg;
+    }
+    template <typename U>
+    inline DualNum<T> operator/(const U& arg) const
+    {
+        return DualNum<T>(*this) /= arg;
+    }
 
     // real number & dual number
-    inline friend this_type operator+(const T& arg1, const this_type& arg2) { return this_type(arg1 + arg2.real_, arg2.imag_); }
-    inline friend this_type operator-(const T& arg1, const this_type& arg2) { return this_type(arg1 - arg2.real_, arg2.imag_); }
-    inline friend this_type operator*(const T& arg1, const this_type& arg2) { return this_type(arg1 * arg2.real_, arg1 * arg2.imag_); }
-    inline friend this_type operator/(const T& arg1, const this_type& arg2) { return this_type(arg1 / arg2.real_, -arg1 * arg2.imag_ / (arg2.real_ * arg2.real_)); }
+    template <typename U>
+    inline friend DualNum<T> operator+(const U& arg1, const DualNum<T>& arg2)
+    {
+        return DualNum<T>(arg1 + arg2.real_, arg2.imag_);
+    }
+    template <typename U>
+    inline friend DualNum<T> operator-(const U& arg1, const DualNum<T>& arg2)
+    {
+        return DualNum<T>(arg1 - arg2.real_, arg2.imag_);
+    }
+    template <typename U>
+    inline friend DualNum<T> operator*(const U& arg1, const DualNum<T>& arg2)
+    {
+        return DualNum<T>(arg1 * arg2.real_, arg1 * arg2.imag_);
+    }
+    template <typename U>
+    inline friend DualNum<T> operator/(const U& arg1, const DualNum<T>& arg2)
+    {
+        return DualNum<T>(arg1 / arg2.real_, -arg1 * arg2.imag_ / (arg2.real_ * arg2.real_));
+    }
 
 
     // coutをいい感じにする
-    inline friend std::ostream& operator<<(std::ostream& out, const this_type& arg)
+    inline friend std::ostream& operator<<(std::ostream& out, const DualNum<T>& arg)
     {
         if (arg.imag_ == 0) {
             return out << arg.real_;

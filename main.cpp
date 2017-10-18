@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Eigen/Dense>
+//#include <Eigen/Dense>
 #include "AutoDiff.hpp"
 
 
@@ -7,12 +7,13 @@ int main()
 {
     double a = 2;
 
-    auto f = [](auto x) { return std::pow(x, 4); };
+    auto f = [](auto x) { return std::pow(x, x); };
 
     std::cout << Diff<double, 0>()(f, a) << std::endl;
     std::cout << Diff<double, 1>()(f, a) << std::endl;
     std::cout << Diff<double, 2>()(f, a) << std::endl;
     std::cout << Diff<double, 3>()(f, a) << std::endl;
+    //    std::cout << Diff<double, 4>()(f, a) << std::endl;
 
     return 0;
 }
