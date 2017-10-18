@@ -17,8 +17,9 @@ private:
     T imag_;
 
 public:
-    inline DualNum<T>(T real, T imag = T(0))
-        : real_(real), imag_(imag){};
+    template <typename U>
+    inline DualNum<T>(U real, U imag = U(0))
+        : real_(T(real)), imag_(T(imag)){};
 
     // getter
     inline T real() const { return real_; }
