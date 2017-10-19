@@ -4,3 +4,6 @@
 *.a
 *.out
 *.bin
+build
+cmake-build-debug
+.idea
