@@ -40,7 +40,11 @@ class D
 public:
     inline auto operator/(const dValue d_value) const
     {
-        return [](auto func) { return [&](double x) { return Diff<double, 1>()(func, x); }; };
+        return [](auto func) {
+            return [&](auto x) {
+                return Diff<decltype(x), 1>()(func, x);
+            };
+        };
     }
 };
 
