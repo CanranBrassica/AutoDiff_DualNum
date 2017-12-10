@@ -143,15 +143,15 @@ public:
     // coutをいい感じにする
     inline friend std::ostream& operator<<(std::ostream& out, const DualNum<T>& arg)
     {
-        /*        if (arg.imag_ == 0) {
+        if (arg.imag_ == 0) {
             return out << arg.real_;
         } else if (arg.real_ == 0) {
             return out << arg.imag_ << 'e';
         } else if (arg.imag_ < 0) {
             return out << arg.real_ << arg.imag_ << 'e';
-        } else {*/
-        return out << "(" << arg.real_ << '+' << arg.imag_ << "e)";
-        // }
+        } else {
+            return out << "(" << arg.real_ << '+' << arg.imag_ << "e)";
+        }
     }
 };
 
@@ -261,4 +261,4 @@ DualNum<T> atanh(const DualNum<T> arg)
 {
     return DualNum<T>(atanh(arg.real()), arg.imag() / 1 - arg.real() * arg.real());
 }
-}
+}  //end of namespace std

@@ -1,7 +1,6 @@
 #pragma once
 #include "DualNum.hpp"
 
-
 template <typename T, unsigned int N>
 class Diff
 {
@@ -32,3 +31,17 @@ Diff<typename, 微分の階数>()(f,入力値);
 <注意>
 c++14以降でないと動きません
 */
+enum dValue {
+    dx = 0
+};
+
+class D
+{
+public:
+    inline auto operator/(const dValue d_value) const
+    {
+        return [](auto func) { return [&](double x) { return Diff<double, 1>()(func, x); }; };
+    }
+};
+
+D d;
